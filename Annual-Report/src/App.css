@@ -1,33 +1,52 @@
+/* Global */
 * {
   box-sizing: border-box;
 }
 
-body{
+body {
   margin: 0;
   padding: 0;
-  min-height: 100%; /* Ensure the page takes full height */
+  min-height: 100%;
   width: 100vw;
   font-family: Arial, sans-serif;
-  background-color: #eef2f5;
+  background-color:#513950;
 }
 
 header {
   width: 100vw;
   background-color: #003366;
   color: white;
-  padding: 30px; /* Increased padding */
+  height: 10vh;
+  padding: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   text-align: center;
+  z-index: 1000;
 }
 
-nav {
+/* Navigation */
+nav.navbar {
   width: 100vw;
-  height: 10vh;
   background-color: #0055aa;
   display: flex;
   justify-content: space-between;
   align-items: center;
   padding: 15px 30px;
   font-size: 1.5rem;
+  flex-wrap: wrap;
+  flex-wrap: wrap;
+  position: fixed; /* Ensures navbar stays at top */
+  top: 10vh; /* Below header */
+  left: 0;
+  z-index: 1000; 
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* Optional shadow for clarity */
+}
+
+.nav-left, .nav-right {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
 }
 
 .nav-left a, .nav-right a {
@@ -40,36 +59,37 @@ nav {
 .signup-btn {
   background-color: #ffc107;
   color: #003366;
-  padding: 8px 16px;
+  padding: 6px 12px;
   border-radius: 4px;
 }
 
 .admin-login-btn {
-  background-color: #6c757d;
+  float : right;
   color: white;
-  padding: 8px 16px;
+  padding: 6px 12px;
   border-radius: 4px;
 }
 
+/* Container + Cards */
 .container {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); /* Cards get wider */
-  gap: 30px; /* Increased gap between cards */
+  width: 60%;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 30px;
   max-width: 1100px;
-  margin: 50px auto;
+  margin: 200px auto;
   padding: 30px;
-  height: calc(100vh - 150px); /* Fill the screen height after the header */
-  overflow-y: auto;
+  min-height: calc(100vh - 250px);
 }
 
 .card {
   background: linear-gradient(135deg, #f6d365 0%, #fda085 100%);
   border-radius: 12px;
-  padding: 40px; /* Increased padding inside cards */
+  padding: 40px;
   text-align: center;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
   transition: all 0.3s ease;
-  font-size: 1.2rem; /* Increased font size */
+  font-size: 1.2rem;
 }
 
 .card:hover {
@@ -78,21 +98,22 @@ nav {
 }
 
 .card i {
-  font-size: 2.5rem; /* Larger icon size */
+  font-size: 2.5rem;
   color: #003366;
   margin-bottom: 15px;
 }
 
+/* Footer */
 footer {
-  width: 100%;
+  width: 100vw;
   background-color: #003366;
   color: white;
   text-align: center;
-  padding: 30px; /* Increased footer padding */
-  margin-top: auto;
+  padding: 30px;
   font-size: 1.1rem;
 }
 
+/* Modal */
 .modal {
   display: block;
   position: fixed;
@@ -110,7 +131,7 @@ footer {
   padding: 40px;
   border: 1px solid #888;
   width: 80%;
-  max-width: 800px; /* Larger modal width */
+  max-width: 800px;
   border-radius: 12px;
   position: relative;
 }
@@ -127,4 +148,42 @@ footer {
 
 .close:hover {
   color: black;
+}
+
+/* Mobile Responsiveness */
+@media (max-width: 768px) {
+  nav.navbar {
+    flex-direction: column;
+    align-items: flex-start;
+    font-size: 1.2rem;
+  }
+
+  .nav-left, .nav-right {
+    width: 100%;
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .nav-left a, .nav-right a {
+    margin: 10px 0;
+  }
+
+  .container {
+    padding: 20px;
+    gap: 20px;
+  }
+
+  .card {
+    font-size: 1rem;
+    padding: 25px;
+  }
+
+  .card i {
+    font-size: 2rem;
+  }
+
+  .modal-content {
+    width: 90%;
+    padding: 25px;
+  }
 }

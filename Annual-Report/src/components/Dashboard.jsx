@@ -4,15 +4,15 @@ import '@fortawesome/fontawesome-free/css/all.min.css';
 
 function Dashboard() {
   const [activeModal, setActiveModal] = useState(null);
-  
+
   const openModal = (modalId) => {
     setActiveModal(modalId);
   };
-  
+
   const closeModal = () => {
     setActiveModal(null);
   };
-  
+
   const cards = [
     { icon: 'fas fa-tachometer-alt', title: 'Dashboard', link: 'dashboard.html', action: 'Go to' },
     { icon: 'fas fa-book', title: 'Research', link: 'research.html', action: 'View' },
@@ -28,7 +28,7 @@ function Dashboard() {
       <header>
         <h1>Annual Report Portal</h1>
       </header>
-      
+
       <nav className="navbar">
         <div className="nav-left">
           <a href="index.html">Home</a>
@@ -57,7 +57,7 @@ function Dashboard() {
         <p>&copy; 2025 Institute Annual Report Portal</p>
       </footer>
 
-      {/* Modal Components */}
+      {/* Modals */}
       {activeModal === 'about' && (
         <div className="modal" id="about">
           <div className="modal-content">

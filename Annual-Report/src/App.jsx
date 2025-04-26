@@ -7,6 +7,8 @@ import Finance from './components/Finance';
 import Academics from './components/Academics';
 import Collaboration from './components/Collaboration';
 import Report from './components/Report';
+import AdminLogin from './Admin/AdminLogin';
+import AdminHome from './Admin/AdminHome';
 
 
 function App() {
@@ -20,15 +22,19 @@ function App() {
         {/* Routes */}
         <Routes>
           <Route path="/" element={<Dashboard />} />
-          <Route path="/dashboard" element={<Dashboard />} />
+          <Route path="/admin-login.html" element={<AdminLogin/>} />
           <Route path="/research" element={<Research />} />
           <Route path="/finance" element={<Finance />} />
           <Route path="/academics" element={<Academics />} />
           <Route path="/collaboration" element={<Collaboration />} />
           <Route path="/report" element={<Report />} />
+          <Route path="/admin-home" element={<AdminHome />} />
+       
+
+          
         </Routes>
 
-    
+        {/* <Footer /> */}
       </div>
     </Router>
   );
