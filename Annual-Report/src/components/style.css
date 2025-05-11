@@ -1,0 +1,120 @@
+/* Global Reset */
+* {
+    box-sizing: border-box;
+  }
+  
+  /* Body */
+  body {
+    margin: 0;
+    padding: 0;
+    min-height: 100%;
+    font-family: Arial, sans-serif;
+    background-color: #e3f5d5;
+    overflow-x: hidden; /* Prevent horizontal scroll */
+  }
+  
+  /* Header */
+  header {
+    width: 100%;
+    background-color: #003366;
+    color: white;
+    height: 10vh;
+    padding: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    z-index: 1000;
+  }
+  
+  /* Navigation Bar */
+  nav {
+    width: 100%;
+    background-color: #0055aa;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 30px;
+    font-size: 1.5rem;
+    flex-wrap: wrap; /* Allow wrapping on smaller screens */
+    position: fixed; /* Keeps navbar at the top */
+    top: 10vh; /* Position it below the header */
+    left: 0;
+    z-index: 1000;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    width: 100%; /* Ensure full width without causing overflow */
+  }
+  
+  /* Left side navigation (for links) */
+  .nav-left {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: flex-start;
+    flex: 1; /* Take up the remaining space */
+  }
+  
+  .nav-left a {
+    color: white;
+    text-decoration: none;
+    margin: 0 15px;
+    font-weight: bold;
+    transition: color 0.3s ease;
+  }
+  
+  /* Hover effect for links */
+  .nav-left a:hover {
+    color: #ffc107; /* Change color on hover */
+  }
+ 
+  
+  /* Footer */
+  footer {
+    background-color: #003366;
+    color: white;
+    text-align: center;
+    padding: 15px 0;
+    position: static;
+    width: 100vw;
+ 
+  }
+  
+  /* Mobile Responsiveness */
+  @media (max-width: 768px) {
+    /* Stack navbar items vertically on mobile */
+    nav {
+      flex-direction: column;
+      align-items: flex-start;
+      padding: 10px; /* Reduce padding for mobile */
+    }
+  
+    /* Align navbar items to the left and adjust margin */
+    .nav-left {
+      width: 100%; /* Full width on smaller screens */
+      flex-direction: column;
+      align-items: flex-start;
+    }
+  
+    .nav-left a {
+      margin: 10px 0; /* Add spacing between links */
+      font-size: 1.2rem; /* Adjust font size */
+    }
+  
+    /* Adjust font size for better readability */
+    nav {
+      font-size: 1.2rem; /* Slightly smaller font for mobile */
+    }
+  
+    /* Optional: Adjust header height for mobile */
+    header {
+      height: 8vh; /* Make header shorter on small screens */
+    }
+  }
+  
+  /* Large Mobile Devices (like tablets in portrait mode) */
+  @media (max-width: 1024px) {
+    nav {
+      font-size: 1.3rem; /* Adjust font size for medium devices */
+    }
+  }
+  

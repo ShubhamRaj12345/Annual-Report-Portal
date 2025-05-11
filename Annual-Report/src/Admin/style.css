@@ -1,0 +1,104 @@
+/* ========== Dropdown Wrapper ========== */
+.dropdown {
+  position: relative;
+  display: inline-block;
+  margin-left: 20px;
+}
+
+/* ========== Trigger Link ========== */
+.session-link {
+  color: #fff;
+  font-weight: 600;
+  text-decoration: none;
+  cursor: pointer;
+  padding: 10px 15px;
+  display: inline-block;
+  border-radius: 6px;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.session-link:hover {
+  color: #ffc107;
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+/* ========== Dropdown Content ========== */
+.dropdown-content {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  background-color: #ffffff;
+  min-width: 200px;
+  padding: 8px 0;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+  border-radius: 10px;
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(10px);
+  transition: opacity 0.3s ease, transform 0.3s ease, visibility 0.3s ease;
+  z-index: 1000;
+}
+
+/* Show on hover */
+.dropdown:hover .dropdown-content {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+}
+
+/* Dropdown Items */
+.dropdown-content a {
+  color: #333;
+  text-decoration: none;
+  padding: 12px 20px;
+  display: block;
+  font-size: 1rem;
+  transition: background-color 0.2s ease, padding-left 0.3s ease;
+}
+
+.dropdown-content a:hover {
+  background-color: #f5f5f5;
+  padding-left: 24px;
+}
+
+/* ========== Prevent Overlap Below Navbar ========== */
+.container {
+  margin-top: 20vh;
+  padding: 20px;
+}
+
+/* ========== Responsive Styling ========== */
+@media (max-width: 768px) {
+  .dropdown {
+    width: 100%;
+    margin-left: 0;
+    margin-top: 10px;
+  }
+
+  .session-link {
+    width: 100%;
+    text-align: left;
+    padding: 12px 16px;
+    font-size: 1rem;
+  }
+
+  .dropdown-content {
+    position: static;
+    width: 100%;
+    box-shadow: none;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    opacity: 1;
+    visibility: visible;
+    transform: none;
+  }
+
+  .dropdown-content a {
+    padding: 12px 16px;
+    font-size: 1rem;
+  }
+
+  .dropdown-content a:hover {
+    padding-left: 20px;
+  }
+}

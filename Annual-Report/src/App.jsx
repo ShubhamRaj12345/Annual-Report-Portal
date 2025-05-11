@@ -1,14 +1,21 @@
 import React, { useState } from 'react';
 import { BrowserRouter as Router, Route, Routes, Link } from 'react-router-dom';
-import Home from './Pages/Home';
+
 import Dashboard from './components/Dashboard';
 import Research from './components/Research';
 import Finance from './components/Finance';
-import Academics from './components/Academics';
 import Collaboration from './components/Collaboration';
 import Report from './components/Report';
 import AdminLogin from './Admin/AdminLogin';
-import AdminHome from './Admin/AdminHome';
+
+import AdminHome1 from './Admin/AdminHome1';
+import Academics from './components/Academics';
+import ComputerScience from './StudentAcademics/ComputerScience/ComputerScience';
+import Mechanical from './StudentAcademics/Mechanical';
+
+
+
+
 
 
 function App() {
@@ -22,14 +29,18 @@ function App() {
         {/* Routes */}
         <Routes>
           <Route path="/" element={<Dashboard />} />
-          <Route path="/admin-login.html" element={<AdminLogin/>} />
+          <Route path="/admin-login" element={<AdminLogin/>} />
           <Route path="/research" element={<Research />} />
           <Route path="/finance" element={<Finance />} />
-          <Route path="/academics" element={<Academics />} />
+       
           <Route path="/collaboration" element={<Collaboration />} />
           <Route path="/report" element={<Report />} />
-          <Route path="/admin-home" element={<AdminHome />} />
-       
+          <Route path="/computer-science" element={<ComputerScience />} />
+          <Route path="/mechanical" element={<Mechanical />} />
+          <Route path="/admin-home1" element={<AdminHome1/>} />
+          <Route path="/academics" element={<Academics />} />
+
+    
 
           
         </Routes>

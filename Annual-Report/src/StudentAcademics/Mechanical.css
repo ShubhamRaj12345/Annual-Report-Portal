@@ -1,0 +1,182 @@
+/* Basic styling for the component */
+.admin-home-container {
+    padding: 20px;
+    font-family: Arial, sans-serif;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+  }
+  
+  /* New container to hold form and chart side by side */
+  .top-section {
+    display: flex;
+    justify-content: space-between;
+    gap: 20px;
+    width: 100%;
+    flex-wrap: wrap; /* Ensures responsive design */
+  }
+  
+  /* Styling for the student form */
+  .student-form {
+    margin-bottom: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    max-width: 400px;
+    width: 100%;
+    padding: 20px;
+    background-color: #c93c3c;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  }
+  
+  /* Input fields, select dropdowns, and buttons within the form */
+  .student-form input,
+  .student-form select,
+  .student-form button {
+    margin: 8px 0;
+    padding: 12px;
+    font-size: 16px;
+    width: 100%;
+    box-sizing: border-box;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+  }
+  
+  /* Styling for the CSV upload section */
+  .student-form input[type="file"] {
+    display: block;
+    margin: 10px 0;
+    font-size: 14px;
+  }
+  
+  /* Button styling for the CSV file upload */
+  .upload-btn {
+    font-size: 14px;
+    background-color: #4CAF50;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    cursor: pointer;
+    width: auto;
+    display: inline-block;
+    text-align: center;
+    margin-top: 10px;
+    border-radius: 4px;
+  }
+  
+  /* Error message styling */
+  .error-message {
+    color: red;
+    font-size: 1.2em;
+    margin-top: 20px;
+  }
+  
+  /* Student list section with scroll */
+  .student-list {
+    max-height: 400px;
+    overflow-y: auto;
+    margin-top: 30px;
+    border: 1px solid #dc3b3b;
+    border-radius: 6px;
+    background-color: #c82424;
+    width: 100%;
+  }
+  
+  .table-container {
+    overflow-x: auto;
+  }
+  
+  .student-list table {
+    width: 100%;
+    min-width: 800px;
+    border-collapse: collapse;
+  }
+  
+  .student-list th,
+  .student-list td {
+    padding: 12px;
+    text-align: center;
+    border: 1px solid #ccc;
+    font-size: 14px;
+    white-space: nowrap;
+  }
+  
+  /* Chart section - no scroll, no white background */
+  .chart-section {
+    margin-top: 20px;
+    flex: 2;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 20px;
+  }
+  
+  .chart-wrapper h4 {
+    margin-top: 20px;
+    margin-bottom: 10px;
+  }
+  
+  /* Responsive Styles */
+  @media (max-width: 768px) {
+    /* Make the form and chart stack vertically on small screens */
+    .top-section {
+      flex-direction: column;
+      align-items: center;
+    }
+  
+    .student-form input,
+    .student-form select,
+    .student-form button {
+      font-size: 14px;
+    }
+  
+    .student-list table th,
+    .student-list table td {
+      padding: 10px;
+      font-size: 13px;
+    }
+  
+    .chart-section {
+      margin-top: 15px;
+    }
+  
+    .student-form input,
+    .student-form select,
+    .student-form button {
+      width: 100%;
+    }
+  }
+  
+  @media (max-width: 480px) {
+    .admin-home-container {
+      padding: 10px;
+    }
+  
+    .student-form input,
+    .student-form select,
+    .student-form button {
+      font-size: 12px;
+      margin: 5px;
+    }
+  
+    .upload-btn {
+      padding: 8px 15px;
+    }
+  
+    .student-list table {
+      font-size: 12px;
+    }
+  
+    .student-form input[type="file"] {
+      font-size: 12px;
+    }
+  
+    .student-list th,
+    .student-list td {
+      padding: 8px 10px;
+    }
+  }
+  

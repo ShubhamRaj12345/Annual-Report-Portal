@@ -18,7 +18,7 @@ const AdminLogin = () => {
       .then(response => {
         if (response.ok) {
           // Redirect to admin home
-          navigate('/admin-home');
+          navigate('/admin-home1');
         } else {
           return response.text().then(text => {
             setError(text);
