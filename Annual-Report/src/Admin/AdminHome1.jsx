@@ -1,50 +1,43 @@
+
 import React, { useState, useEffect } from 'react';
 import { Route, Routes, Link, useNavigate } from 'react-router-dom';
 import './style.css';
 
 const AdminHome1 = () => {
-  const [mainCategory, setMainCategory] = useState('');
-  const [optionType, setOptionType] = useState('');
-  const [subOption, setSubOption] = useState('');
+  const [mainCategory, setMainCategory]   = useState('');
+  const [optionType, setOptionType]       = useState('');
+  const [subOption, setSubOption]         = useState('');
   const [selectedBranch, setSelectedBranch] = useState('');
-  const [selectedYear, setSelectedYear] = useState('');
+
   const navigate = useNavigate();
 
+  /* ---------- handlers ---------- */
   const handleCategorySelection = (mainCat, type) => {
     setMainCategory(mainCat);
     setOptionType(type);
     setSubOption('');
     setSelectedBranch('');
-    setSelectedYear('');
   };
 
   const handleOptionSelection = (option) => {
     setSubOption(option);
     setSelectedBranch('');
-    setSelectedYear('');
     if (option === 'Mechanical Engineering') {
-      navigate('/mechanical'); // Navigate to the Mechanical Engineering page
+      navigate('/mechanical');
+    } else if (option === 'Computer Science') {
+      navigate('/computer-science');
+    } else if (option === 'Electrical Engineering') {
+      navigate('/electrical');
+    } else if (option === 'Civil Engineering') {
+      navigate('/civil');
     }
   };
 
   const handleBranchSelection = (branch) => {
     setSelectedBranch(branch);
-    setSelectedYear('');
   };
 
-  const handleYearSelection = (year) => {
-    setSelectedYear(year);
-  };
-
-  useEffect(() => {
-    if (
-      (optionType === 'Department' && subOption && selectedYear) ||
-      (optionType === 'Student Placement' && subOption && selectedBranch && selectedYear)
-    ) {
-      navigate('/computer-science');
-    }
-  }, [optionType, subOption, selectedBranch, selectedYear, navigate]);
-
+  /* ---------- JSX ---------- */
   return (
     <>
       <header>
@@ -59,6 +52,7 @@ const AdminHome1 = () => {
           <Link to="/help">Help</Link>
         </div>
 
+        {/* ---- main categories ---- */}
         {!mainCategory && (
           <>
             {/* Finance */}
@@ -103,7 +97,7 @@ const AdminHome1 = () => {
           </>
         )}
 
-        {/* Department SubOptions */}
+        {/* ---- sub-options ---- */}
         {optionType === 'Department' && (
           <div className="dropdown">
             <a href="#" className="session-link">Select Department</a>
@@ -116,7 +110,6 @@ const AdminHome1 = () => {
           </div>
         )}
 
-        {/* Student Placement SubOptions */}
         {optionType === 'Student Placement' && (
           <div className="dropdown">
             <a href="#" className="session-link">Placement Type</a>
@@ -127,7 +120,7 @@ const AdminHome1 = () => {
           </div>
         )}
 
-        {/* Branch Selection */}
+        {/* ---- branch ---- */}
         {optionType === 'Student Placement' && subOption && (
           <div className="dropdown">
             <a href="#" className="session-link">Select Branch</a>
@@ -139,39 +132,27 @@ const AdminHome1 = () => {
             </div>
           </div>
         )}
-
-        {/* Year Selection */}
-        {(optionType === 'Department' && subOption) || (optionType === 'Student Placement' && subOption && selectedBranch) ? (
-          <div className="dropdown">
-            <a href="#" className="session-link">Select Year</a>
-            <div className="dropdown-content">
-              <a href="#" onClick={() => handleYearSelection('2022')}>2022</a>
-              <a href="#" onClick={() => handleYearSelection('2023')}>2023</a>
-              <a href="#" onClick={() => handleYearSelection('2024')}>2024</a>
-              <a href="#" onClick={() => handleYearSelection('2025')}>2025</a>
-              <a href="#" onClick={() => handleYearSelection('2026')}>2026</a>
-            </div>
-          </div>
-        ) : null}
       </nav>
 
       <div className="container">
         <Routes>
-          <Route path="/about" element={<div>About Us</div>} />
-          <Route path="/contact" element={<div>Contact Us</div>} />
-          <Route path="/help" element={<div>Help Page</div>} />
-          <Route path="/mechanical" element={<div>Mechanical Engineering Department Content</div>} />
+          <Route path="/about"       element={<div>About Us</div>} />
+          <Route path="/contact"     element={<div>Contact Us</div>} />
+          <Route path="/help"        element={<div>Help Page</div>} />
+          <Route path="/mechanical"  element={<div>Mechanical Engineering Department Content</div>} />
+          <Route path="/computer-science"  element={<div>Computer Science Department Content</div>} />
+          <Route path="/electrical"  element={<div>Electrical Engineering Department Content</div>} />
+          <Route path="/civil"  element={<div>Civil Engineering Department Content</div>} />
         </Routes>
 
-        {(optionType === 'Department' && subOption && selectedYear) ||
-        (optionType === 'Student Placement' && subOption && selectedBranch && selectedYear) ? (
+        {(optionType === 'Department' && subOption) ||
+         (optionType === 'Student Placement' && subOption && selectedBranch) ? (
           <div>
             <h2>Selected Academic Info</h2>
             <p>Main Category: {mainCategory}</p>
             <p>Option Type: {optionType}</p>
             <p>Sub Option: {subOption}</p>
             {selectedBranch && <p>Branch: {selectedBranch}</p>}
-            <p>Year: {selectedYear}</p>
           </div>
         ) : null}
       </div>

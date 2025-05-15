@@ -49,9 +49,17 @@ function Dashboard() {
 
   return (
     <>
-      <header className={isScrolled ? 'scrolled' : ''}>
+      {/* <header className={isScrolled ? 'scrolled' : ''}>
         <h1>Annual Report Portal</h1>
-      </header>
+      </header> */}
+
+      <header className={`header1 ${isScrolled ? 'scrolled' : ''}`}>
+  <div className="header1-content">
+    <img src="logo.jpg" alt="Institute Logo" className="header1-logo" />
+    <h1>Annual Report Portal</h1>
+  </div>
+    </header>
+
 
       <nav className={`navbar ${isScrolled ? 'scrolled' : ''}`}>
         <div className="nav-left">

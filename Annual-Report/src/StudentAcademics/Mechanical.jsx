@@ -1,58 +1,69 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import Papa from 'papaparse';
-import {
-  Pie,
-  Bar,
-  Line,
-  Doughnut,
-  PolarArea
-} from 'react-chartjs-2';
-
+import { Doughnut } from 'react-chartjs-2';
 import {
   Chart as ChartJS,
   ArcElement,
   Tooltip,
   Legend,
-  BarElement,
   CategoryScale,
   LinearScale,
-  PointElement,
-  LineElement,
-  RadialLinearScale,
 } from 'chart.js';
-
 import './Mechanical.css';
 
-ChartJS.register(
-  ArcElement,
-  Tooltip,
-  Legend,
-  BarElement,
-  CategoryScale,
-  LinearScale,
-  PointElement,
-  LineElement,
-  RadialLinearScale
-);
+ChartJS.register(ArcElement, Tooltip, Legend, CategoryScale, LinearScale);
 
 const Mechanical = () => {
   const [students, setStudents] = useState([]);
+  const [semesterWiseStudents, setSemesterWiseStudents] = useState({});
   const [name, setName] = useState('');
   const [rollNo, setRollNo] = useState('');
   const [semester, setSemester] = useState('');
-  const [math, setMath] = useState('');
-  const [physics, setPhysics] = useState('');
-  const [thermo, setThermo] = useState('');
+  const [grades, setGrades] = useState({});
+  const [session, setSession] = useState('');
+  const [filterSession, setFilterSession] = useState('');
+  const [visibleSemester, setVisibleSemester] = useState(null);
+  const [message, setMessage] = useState('');
+
+  const subjects = {
+    1: ['Math', 'Data Structures', 'OS', 'DBMS'],
+    2: ['Math', 'Algorithms', 'OS', 'DBMS'],
+    3: ['Math', 'DSA', 'Computer Networks', 'DBMS'],
+    4: ['Math', 'Software Engineering', 'Computer Networks', 'DBMS'],
+    5: ['Math', 'Compiler Design', 'Cloud Computing', 'DBMS'],
+    6: ['Math', 'AI', 'Operating Systems', 'DBMS'],
+    7: ['Math', 'Machine Learning', 'AI', 'DBMS'],
+    8: ['Math', 'Big Data', 'Machine Learning', 'DBMS'],
+  };
 
   useEffect(() => {
     fetchStudents();
   }, []);
 
+  useEffect(() => {
+    if (filterSession) {
+      for (let i = 1; i <= 8; i++) {
+        fetchStudentsBySemester(i);
+      }
+    }
+  }, [filterSession]);
+
   const fetchStudents = () => {
     axios.get('http://localhost:7070/students')
-      .then((response) => setStudents(response.data))
-      .catch((error) => console.error('Error fetching students:', error));
+      .then((res) => setStudents(res.data))
+      .catch((err) => console.error('Error fetching students:', err));
+  };
+
+  const fetchStudentsBySemester = (sem) => {
+    if (!filterSession) return;
+    axios.get(`http://localhost:7070/students/semester/${sem}/session/${filterSession}`)
+      .then((res) => {
+        setSemesterWiseStudents((prev) => ({
+          ...prev,
+          [sem]: res.data,
+        }));
+      })
+      .catch((err) => console.error(`Error fetching semester ${sem}:`, err));
   };
 
   const handleAddStudent = (e) => {
@@ -61,230 +72,209 @@ const Mechanical = () => {
       name,
       rollNo,
       semester: parseInt(semester),
-      subjects: {
-        math,
-        physics,
-        thermodynamics: thermo
-      }
+      session,
+      subjects: grades,
     };
-
     axios.post('http://localhost:7070/students', newStudent)
-      .then((response) => {
-        setStudents([...students, response.data]);
+      .then(() => {
+        fetchStudentsBySemester(newStudent.semester);
         setName('');
         setRollNo('');
         setSemester('');
-        setMath('');
-        setPhysics('');
-        setThermo('');
+        setSession('');
+        setGrades({});
+        setMessage('Student added successfully!');
+        setTimeout(() => setMessage(''), 3000);
       })
-      .catch((error) => console.error('Error adding student:', error));
+      .catch((err) => console.error('Error adding student:', err));
   };
 
-  const handleDeleteStudent = (id) => {
+  const handleDeleteStudent = (id, semester) => {
     axios.delete(`http://localhost:7070/students/${id}`)
-      .then(() => setStudents(students.filter(student => student.id !== id)))
-      .catch((error) => console.error('Error deleting student:', error));
+      .then(() => {
+        fetchStudentsBySemester(semester);
+        setMessage('Student deleted successfully!');
+        setTimeout(() => setMessage(''), 3000);
+      })
+      .catch((err) => console.error('Error deleting student:', err));
   };
 
   const handleCSVUpload = (e) => {
     const file = e.target.files[0];
     if (!file) return;
 
-    Papa.parse(file, {
-      header: true,
-      skipEmptyLines: true,
-      complete: (results) => {
-        const parsedStudents = results.data
-          .filter(row => parseInt(row.semester) >= 1 && parseInt(row.semester) <= 8)
-          .map((row) => ({
-            name: row.name,
-            rollNo: row.rollNo,
-            semester: parseInt(row.semester),
-            subjects: {
-              math: row.math,
-              physics: row.physics,
-              thermodynamics: row.thermodynamics,
-            },
-          }));
-        axios.post('http://localhost:7070/students/upload', parsedStudents)
-          .then(() => fetchStudents())
-          .catch((error) => console.error('CSV upload failed:', error));
-      },
-    });
+    const formData = new FormData();
+    formData.append("file", file);
+
+    axios.post('http://localhost:7070/students/upload', formData, {
+      headers: { 'Content-Type': 'multipart/form-data' },
+    })
+      .then((res) => {
+        const uploadedSession = res.data.session;
+        setFilterSession(uploadedSession);
+        setMessage('Upload successful!');
+        setTimeout(() => setMessage(''), 3000);
+        for (let i = 1; i <= 8; i++) {
+          fetchStudentsBySemester(i);
+        }
+      })
+      .catch((err) => console.error('Upload failed:', err));
   };
 
-  const prepareChartData = () => {
-    const semesterGroups = {};
+  const downloadTemplate = (sem) => {
+    const headers = ['name', 'rollNo', 'semester', 'session', ...subjects[sem]];
+    const csvContent = [headers.join(',')].join('\n');
+    const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.href = url;
+    link.setAttribute('download', `semester_${sem}_template.csv`);
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  };
 
-    students.forEach((student) => {
-      const subjects = student.subjects || {};
-      const isPass = !Object.values(subjects).includes('F');
-      if (!semesterGroups[student.semester]) {
-        semesterGroups[student.semester] = { passed: 0, total: 0 };
-      }
-      semesterGroups[student.semester].total += 1;
-      if (isPass) {
-        semesterGroups[student.semester].passed += 1;
-      }
+  const prepareChartData = (students) => {
+    let passed = 0;
+    let failed = 0;
+    students.forEach((s) => {
+      const isPass = s.subjects ? !Object.values(s.subjects).includes('F') : false;
+      isPass ? passed++ : failed++;
     });
 
-    const labels = Object.keys(semesterGroups).map((sem) => `Sem ${sem}`);
-    const data = Object.values(semesterGroups).map((g) => g.passed);
-
     return {
-      labels,
-      datasets: [
-        {
-          label: 'Passed Students',
-          data,
-          backgroundColor: [
-            'rgba(255, 99, 132, 0.6)',
-            'rgba(54, 162, 235, 0.6)',
-            'rgba(255, 206, 86, 0.6)',
-            'rgba(75, 192, 192, 0.6)',
-            'rgba(153, 102, 255, 0.6)',
-            'rgba(255, 159, 64, 0.6)',
-            'rgba(100, 255, 218, 0.6)',
-            'rgba(200, 100, 255, 0.6)'
-          ],
-          borderColor: 'rgba(0, 0, 0, 0.1)',
-          borderWidth: 1,
-        },
-      ],
+      labels: ['Passed', 'Failed'],
+      datasets: [{
+        data: [passed, failed],
+        backgroundColor: ['#4CAF50', '#FF6347'],
+        hoverOffset: 4,
+      }],
     };
   };
 
   return (
-    <div className="admin-home-container">
-      <h1>Department of Mechanical Engineering</h1>
+    <div className="admin-home-container1">
+      <h1>Department of Mechanical</h1>
+      {message && <div className="message-popup">{message}</div>}
 
-      <form className="student-form">
+      {/* CSV Upload */}
+      <form className="student-form1">
         <h3>Upload Students via CSV</h3>
         <label htmlFor="csvFile" className="upload-btn">Choose CSV File</label>
-        <input
-          type="file"
-          id="csvFile"
-          accept=".csv"
-          onChange={handleCSVUpload}
-          className="hidden-file"
-        />
+        <input type="file" id="csvFile" accept=".csv" onChange={handleCSVUpload} className="hidden-file" />
+        <div className="csv-templates">
+          <h4>Download Semester-wise CSV Templates</h4>
+          {[...Array(8)].map((_, i) => {
+            const sem = i + 1;
+            return (
+              <button type="button" key={sem} onClick={() => downloadTemplate(sem)}>
+                Download Semester {sem} Template
+              </button>
+            );
+          })}
+        </div>
       </form>
 
-      <form onSubmit={handleAddStudent} className="student-form">
-        <input
-          type="text"
-          placeholder="Student Name"
-          value={name}
-          onChange={(e) => setName(e.target.value)}
-          required
-        />
-        <input
-          type="text"
-          placeholder="Roll Number"
-          value={rollNo}
-          onChange={(e) => setRollNo(e.target.value)}
-          required
-        />
-
-        <select value={semester} onChange={(e) => setSemester(e.target.value)} required>
+      {/* Manual Add Form */}
+      <form onSubmit={handleAddStudent} className="student-form1">
+        <input type="text" placeholder="Student Name" value={name} onChange={(e) => setName(e.target.value)} required />
+        <input type="text" placeholder="Roll Number" value={rollNo} onChange={(e) => setRollNo(e.target.value)} required />
+        <select value={semester} onChange={(e) => { setSemester(e.target.value); setGrades({}); }} required>
           <option value="">Select Semester</option>
           {[...Array(8)].map((_, i) => (
-            <option key={i + 1} value={i + 1}>
-              Semester {i + 1}
-            </option>
+            <option key={i + 1} value={i + 1}>Semester {i + 1}</option>
           ))}
         </select>
-
-        <select value={math} onChange={(e) => setMath(e.target.value)} required>
-          <option value="">Select Math Grade</option>
-          <option value="A">A</option>
-          <option value="B">B</option>
-          <option value="C">C</option>
-          <option value="D">D</option>
-          <option value="F">F</option>
+        <select value={session} onChange={(e) => setSession(e.target.value)} required>
+          <option value="">Select Session</option>
+          <option value="2022-2023">2022-2023</option>
+          <option value="2023-2024">2023-2024</option>
+          <option value="2024-2025">2024-2025</option>
+          <option value="2025-2026">2025-2026</option>
         </select>
-        <select value={physics} onChange={(e) => setPhysics(e.target.value)} required>
-          <option value="">Select Physics Grade</option>
-          <option value="A">A</option>
-          <option value="B">B</option>
-          <option value="C">C</option>
-          <option value="D">D</option>
-          <option value="F">F</option>
-        </select>
-        <select value={thermo} onChange={(e) => setThermo(e.target.value)} required>
-          <option value="">Select Thermodynamics Grade</option>
-          <option value="A">A</option>
-          <option value="B">B</option>
-          <option value="C">C</option>
-          <option value="D">D</option>
-          <option value="F">F</option>
-        </select>
-
+        {semester && subjects[semester]?.map((sub) => (
+          <select key={sub} value={grades[sub] ?? ''} onChange={(e) => setGrades({ ...grades, [sub]: e.target.value })} required>
+            <option value="">{sub} Grade</option>
+            <option value="A">A</option>
+            <option value="B">B</option>
+            <option value="C">C</option>
+            <option value="D">D</option>
+            <option value="F">F</option>
+          </select>
+        ))}
         <button type="submit">Add Student</button>
       </form>
 
-      <div className="student-list">
-        <h2>Students List</h2>
-        <div className="table-container">
-          <table>
-            <thead>
-              <tr>
-                <th>Name</th>
-                <th>Roll No</th>
-                <th>Semester</th>
-                <th>Math</th>
-                <th>Physics</th>
-                <th>Thermo</th>
-                <th>Status</th>
-                <th>Actions</th>
-              </tr>
-            </thead>
-            <tbody>
-              {students.map((student) => {
-                const subjects = student.subjects || {};
-                const isPass = !Object.values(subjects).includes('F');
-                return (
-                  <tr key={student.id}>
-                    <td>{student.name}</td>
-                    <td>{student.rollNo}</td>
-                    <td>{student.semester}</td>
-                    <td>{subjects.math}</td>
-                    <td>{subjects.physics}</td>
-                    <td>{subjects.thermodynamics}</td>
-                    <td>{isPass ? 'Pass' : 'Fail'}</td>
-                    <td>
-                      <button onClick={() => handleDeleteStudent(student.id)}>Delete</button>
-                    </td>
-                  </tr>
-                );
-              })}
-            </tbody>
-          </table>
+      {/* Session Filter */}
+      <div className="session-selector-container">
+        <h3>Filter by Session</h3>
+        <select value={filterSession} onChange={(e) => setFilterSession(e.target.value)}>
+          <option value="">-- Select Session --</option>
+          <option value="2022-2023">2022-2023</option>
+          <option value="2023-2024">2023-2024</option>
+          <option value="2024-2025">2024-2025</option>
+          <option value="2025-2026">2025-2026</option>
+        </select>
+      </div>
+
+      {/* Semester Buttons */}
+      <div className="student-list1">
+        <h2>Semester-wise Students</h2>
+        <div className="semester-buttons">
+          {[...Array(8)].map((_, i) => {
+            const sem = i + 1;
+            return (
+              <button key={sem} onClick={() => { setVisibleSemester(sem); fetchStudentsBySemester(sem); }}>
+                Semester {sem}
+              </button>
+            );
+          })}
         </div>
       </div>
 
-      <div className="chart-section">
-        <h2>Semester-wise Pass Count</h2>
-        <div className="chart-scroll-container">
-          <div className="chart-wrapper">
-            <h4>Pie Chart</h4>
-            <Pie data={prepareChartData()} />
+      {/* Display Semester Data */}
+      {visibleSemester && (
+        <div className="semester-container">
+          <h3>Semester {visibleSemester}</h3>
+          <div className="semester-content">
+            <div className="student-list-container">
+              <div className="scrollable-list">
+                <h4>Student List</h4>
+                <table>
+                  <thead>
+                    <tr>
+                      <th>Name</th>
+                      <th>Roll No</th>
+                      <th>Status</th>
+                      <th>Action</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {semesterWiseStudents[visibleSemester]?.map((s) => {
+                      const isPass = s.subjects ? !Object.values(s.subjects).includes('F') : false;
+                      return (
+                        <tr key={s.id}>
+                          <td>{s.name}</td>
+                          <td>{s.rollNo}</td>
+                          <td>{isPass ? 'Pass' : 'Fail'}</td>
+                          <td>
+                            <button onClick={() => handleDeleteStudent(s.id, visibleSemester)}>Delete</button>
+                          </td>
+                        </tr>
+                      );
+                    })}
+                  </tbody>
+                </table>
+              </div>
+            </div>
 
-            <h4>Bar Chart</h4>
-            <Bar data={prepareChartData()} options={{ responsive: true, plugins: { legend: { display: false } } }} />
-
-            <h4>Line Chart</h4>
-            <Line data={prepareChartData()} options={{ responsive: true }} />
-
-            <h4>Doughnut Chart</h4>
-            <Doughnut data={prepareChartData()} />
-
-            <h4>Polar Area Chart</h4>
-            <PolarArea data={prepareChartData()} />
+            <div className="graph-container">
+              <h4>Semester Performance</h4>
+              <Doughnut data={prepareChartData(semesterWiseStudents[visibleSemester])} />
+            </div>
           </div>
         </div>
-      </div>
+      )}
     </div>
   );
 };

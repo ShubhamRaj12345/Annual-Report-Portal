@@ -1,182 +1,189 @@
-/* Basic styling for the component */
-.admin-home-container {
-    padding: 20px;
-    font-family: Arial, sans-serif;
-    display: flex;
+.admin-home-container1 {
+  padding: 40px;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background-color: #f4f7fa;
+  color: #333;
+  min-height: 100vh;
+  width: 100vw;
+  box-sizing: border-box;
+}
+
+/* ==== Form Styling ==== */
+/*.student-form1 {
+  background-color: #fff;
+  padding: 24px;
+  margin-bottom: 30px;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  max-width: 600px;
+  width: 100%;
+}
+
+.student-form1 input,
+.student-form1 select {
+  margin: 10px 0;
+  padding: 10px;
+  width: 100%;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-size: 14px;
+  transition: border-color 0.3s;
+}
+
+.student-form1 input:focus,
+.student-form1 select:focus {
+  border-color: #007bff;
+  outline: none;
+}
+
+.student-form1 button {
+  margin-top: 15px;
+  padding: 10px 16px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.student-form1 button:hover {
+  background-color: #0056b3;
+}
+  */
+
+/* ==== Upload Button ==== */
+.upload-btn {
+  display: inline-block;
+  margin-bottom: 15px;
+  background-color: #28a745;
+  color: white;
+  padding: 10px 14px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: background-color 0.3s;
+}
+
+.upload-btn:hover {
+  background-color: #218838;
+}
+
+.hidden-file {
+  display: none;
+}
+
+/* ==== Semester & Students Section ==== */
+.student-list1 {
+  margin-top: 40px;
+}
+
+.student-list1 button {
+  margin: 6px 6px 12px 0;
+  padding: 10px 14px;
+  background-color: #6c757d;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  font-size: 14px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.student-list1 button:hover {
+  background-color: #5a6268;
+}
+
+.semester-container {
+  margin-top: 40px;
+  background-color: #ffffff;
+  padding: 20px;
+  border-radius: 10px;
+  /* REMOVE SCROLL AND HEIGHT */
+  max-height: none;
+  overflow: visible;
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.07);
+  border: 1px solid #e0e0e0;
+}
+
+.semester-container h3 {
+  font-size: 20px;
+  margin-bottom: 10px;
+  color: #444;
+}
+
+/* ==== Layout for Students and Chart ==== */
+.semester-content {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 24px;
+  align-items: flex-start;
+  width: 100%;
+}
+
+.student-list-container,
+.graph-container {
+  flex: 1;
+  min-width: 320px;
+}
+
+/* Only scrollable list will scroll */
+.scrollable-list {
+  max-height: 320px;
+  overflow-y: auto;
+  border: 1px solid #ddd;
+  background-color: #fff;
+  border-radius: 8px;
+  padding: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+.scrollable-list h4 {
+  margin-bottom: 10px;
+  font-size: 16px;
+  color: #555;
+}
+
+.scrollable-list table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.scrollable-list th,
+.scrollable-list td {
+  border: 1px solid #ccc;
+  padding: 10px;
+  text-align: left;
+  font-size: 14px;
+}
+
+.scrollable-list th {
+  background-color: #f1f1f1;
+}
+
+/* ==== Chart Section ==== */
+.graph-container {
+  background-color: #fff;
+  border-radius: 8px;
+  padding: 20px;
+  
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  /* NO SCROLL OR HEIGHT LIMIT */
+  overflow: visible;
+}
+
+.graph-container h4 {
+  margin-bottom: 10px;
+  font-size: 16px;
+  
+  color: #555;
+}
+
+/* ==== Responsive ==== */
+@media (max-width: 768px) {
+  .semester-content {
     flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    min-height: 100vh;
   }
-  
-  /* New container to hold form and chart side by side */
-  .top-section {
-    display: flex;
-    justify-content: space-between;
-    gap: 20px;
-    width: 100%;
-    flex-wrap: wrap; /* Ensures responsive design */
-  }
-  
-  /* Styling for the student form */
-  .student-form {
-    margin-bottom: 20px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    max-width: 400px;
-    width: 100%;
-    padding: 20px;
-    background-color: #c93c3c;
-    border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  }
-  
-  /* Input fields, select dropdowns, and buttons within the form */
-  .student-form input,
-  .student-form select,
-  .student-form button {
-    margin: 8px 0;
-    padding: 12px;
-    font-size: 16px;
-    width: 100%;
-    box-sizing: border-box;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-  }
-  
-  /* Styling for the CSV upload section */
-  .student-form input[type="file"] {
-    display: block;
-    margin: 10px 0;
-    font-size: 14px;
-  }
-  
-  /* Button styling for the CSV file upload */
-  .upload-btn {
-    font-size: 14px;
-    background-color: #4CAF50;
-    color: white;
-    padding: 10px 20px;
-    border: none;
-    cursor: pointer;
-    width: auto;
-    display: inline-block;
-    text-align: center;
-    margin-top: 10px;
-    border-radius: 4px;
-  }
-  
-  /* Error message styling */
-  .error-message {
-    color: red;
-    font-size: 1.2em;
-    margin-top: 20px;
-  }
-  
-  /* Student list section with scroll */
-  .student-list {
-    max-height: 400px;
-    overflow-y: auto;
-    margin-top: 30px;
-    border: 1px solid #dc3b3b;
-    border-radius: 6px;
-    background-color: #c82424;
-    width: 100%;
-  }
-  
-  .table-container {
-    overflow-x: auto;
-  }
-  
-  .student-list table {
-    width: 100%;
-    min-width: 800px;
-    border-collapse: collapse;
-  }
-  
-  .student-list th,
-  .student-list td {
-    padding: 12px;
-    text-align: center;
-    border: 1px solid #ccc;
-    font-size: 14px;
-    white-space: nowrap;
-  }
-  
-  /* Chart section - no scroll, no white background */
-  .chart-section {
-    margin-top: 20px;
-    flex: 2;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    padding: 20px;
-  }
-  
-  .chart-wrapper h4 {
-    margin-top: 20px;
-    margin-bottom: 10px;
-  }
-  
-  /* Responsive Styles */
-  @media (max-width: 768px) {
-    /* Make the form and chart stack vertically on small screens */
-    .top-section {
-      flex-direction: column;
-      align-items: center;
-    }
-  
-    .student-form input,
-    .student-form select,
-    .student-form button {
-      font-size: 14px;
-    }
-  
-    .student-list table th,
-    .student-list table td {
-      padding: 10px;
-      font-size: 13px;
-    }
-  
-    .chart-section {
-      margin-top: 15px;
-    }
-  
-    .student-form input,
-    .student-form select,
-    .student-form button {
-      width: 100%;
-    }
-  }
-  
-  @media (max-width: 480px) {
-    .admin-home-container {
-      padding: 10px;
-    }
-  
-    .student-form input,
-    .student-form select,
-    .student-form button {
-      font-size: 12px;
-      margin: 5px;
-    }
-  
-    .upload-btn {
-      padding: 8px 15px;
-    }
-  
-    .student-list table {
-      font-size: 12px;
-    }
-  
-    .student-form input[type="file"] {
-      font-size: 12px;
-    }
-  
-    .student-list th,
-    .student-list td {
-      padding: 8px 10px;
-    }
-  }
-  
+}
+
