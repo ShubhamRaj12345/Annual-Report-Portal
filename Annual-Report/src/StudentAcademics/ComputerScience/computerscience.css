@@ -190,7 +190,7 @@
 
 /* Only scrollable list will scroll */
 .scrollable-list {
-  max-height: 320px;
+  max-height: 450px;
   overflow-y: auto;
   border: 1px solid #ddd;
   background-color: #fff;
@@ -516,5 +516,57 @@
   .template-download-btn {
     padding: 10px 12px;
     font-size: 0.8rem;
+  }
+}
+
+.session-select {
+  padding: 0.5rem 1rem;
+  font-size: 1rem;
+  margin-top: 0.5rem;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+}
+
+
+
+
+
+
+
+
+
+
+
+/* Annual Graph Styles */
+.annual-graph-container {
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+  margin: 20px 0;
+}
+
+.annual-graph-container h2 {
+  margin-top: 0;
+  color: #2c3e50;
+  font-size: 1.5rem;
+  border-bottom: 1px solid #eee;
+  padding-bottom: 10px;
+  margin-bottom: 20px;
+}
+
+.chart-wrapper {
+  height: 400px;
+  position: relative;
+  margin: 20px 0;
+}
+
+@media (max-width: 768px) {
+  .chart-wrapper {
+    height: 300px;
+  }
+  
+  .annual-graph-container {
+    padding: 15px;
   }
 }

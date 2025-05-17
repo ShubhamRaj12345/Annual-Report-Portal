@@ -1,17 +1,39 @@
 
 import React, { useState, useEffect } from 'react';
+import axios from 'axios';
 import { Route, Routes, Link, useNavigate } from 'react-router-dom';
 import './style.css';
 
 const AdminHome1 = () => {
-  const [mainCategory, setMainCategory]   = useState('');
-  const [optionType, setOptionType]       = useState('');
-  const [subOption, setSubOption]         = useState('');
+  const [mainCategory, setMainCategory] = useState('');
+  const [optionType, setOptionType] = useState('');
+  const [subOption, setSubOption] = useState('');
   const [selectedBranch, setSelectedBranch] = useState('');
+  const [newFaculty, setNewFaculty] = useState({
+    name: '',
+    department: '',
+    email: '',
+    role: 'faculty',
+    password: ''
+  });
+  const [generatedId, setGeneratedId] = useState('');
+  const [facultyList, setFacultyList] = useState([]);
 
   const navigate = useNavigate();
 
-  /* ---------- handlers ---------- */
+  useEffect(() => {
+    fetchFacultyList();
+  }, []);
+
+  const fetchFacultyList = async () => {
+    try {
+      const res = await axios.get('http://localhost:7070/api/faculty/all');
+      setFacultyList(res.data);
+    } catch (err) {
+      console.error('Error fetching faculty:', err);
+    }
+  };
+
   const handleCategorySelection = (mainCat, type) => {
     setMainCategory(mainCat);
     setOptionType(type);
@@ -19,30 +41,64 @@ const AdminHome1 = () => {
     setSelectedBranch('');
   };
 
-  const handleOptionSelection = (option) => {
+  const handleOptionSelection = (option, e) => {
+    e.preventDefault();
     setSubOption(option);
     setSelectedBranch('');
-    if (option === 'Mechanical Engineering') {
-      navigate('/mechanical');
-    } else if (option === 'Computer Science') {
-      navigate('/computer-science');
-    } else if (option === 'Electrical Engineering') {
-      navigate('/electrical');
-    } else if (option === 'Civil Engineering') {
-      navigate('/civil');
+    if (option === 'Mechanical Engineering') navigate('/mechanical');
+    else if (option === 'Computer Science') navigate('/computer-science');
+    else if (option === 'Electrical Engineering') navigate('/electrical');
+    else if (option === 'Civil Engineering') navigate('/civil');
+  };
+
+  const handleFacultyInputChange = (e) => {
+    const { name, value } = e.target;
+    setNewFaculty(prev => ({ ...prev, [name]: value }));
+  };
+
+  const generateFacultyId = async (e) => {
+    e.preventDefault();
+    if (!newFaculty.password) {
+      alert("Please enter a password");
+      return;
+    }
+    if (!newFaculty.name || !newFaculty.email || !newFaculty.department) {
+      alert("Please fill all required fields");
+      return;
+    }
+
+    try {
+      const res = await axios.post('http://localhost:7070/api/faculty/add', newFaculty);
+      const savedFaculty = res.data;
+      setGeneratedId(savedFaculty.generatedId);
+      setFacultyList([...facultyList, savedFaculty]);
+      setNewFaculty({ name: '', department: '', email: '', role: 'faculty', password: '' });
+      alert(`Login ID generated: ${savedFaculty.generatedId}`);
+    } catch (err) {
+      console.error('Error saving faculty:', err);
+      alert('Failed to save faculty. Check backend server.');
     }
   };
 
-  const handleBranchSelection = (branch) => {
-    setSelectedBranch(branch);
+  // New: Delete faculty by generatedId
+  const deleteFaculty = async (generatedId) => {
+    if (!window.confirm(`Are you sure you want to delete faculty with ID ${generatedId}?`)) {
+      return;
+    }
+    try {
+      await axios.delete(`http://localhost:7070/api/faculty/delete-by-generatedId/${generatedId}`);
+      // Remove deleted faculty from list
+      setFacultyList(facultyList.filter(faculty => faculty.generatedId !== generatedId));
+      alert(`Faculty ${generatedId} deleted successfully.`);
+    } catch (err) {
+      console.error('Error deleting faculty:', err);
+      alert('Failed to delete faculty.');
+    }
   };
 
-  /* ---------- JSX ---------- */
   return (
-    <>
-      <header>
-        <h1>Admin Panel</h1>
-      </header>
+    <div className="admin-container">
+      <header><h1>Admin Panel</h1></header>
 
       <nav>
         <div className="nav-left">
@@ -52,115 +108,144 @@ const AdminHome1 = () => {
           <Link to="/help">Help</Link>
         </div>
 
-        {/* ---- main categories ---- */}
         {!mainCategory && (
           <>
-            {/* Finance */}
             <div className="dropdown">
-              <a href="#" className="session-link">Finance</a>
+              <button type="button" className="session-link">Finance</button>
               <div className="dropdown-content">
-                <a href="#" onClick={() => handleCategorySelection('Finance', 'Department')}>Budget Allocation & Utilization</a>
-                <a href="#" onClick={() => handleCategorySelection('Finance', 'Student Placement')}>Fee Structure & Scholarship</a>
-                <a href="#" onClick={() => handleCategorySelection('Finance', 'Student Placement')}>Expense Summary</a>
+                <a href="#" onClick={(e) => { e.preventDefault(); handleCategorySelection('Finance', 'Department'); }}>Budget Allocation & Utilization</a>
+                <a href="#" onClick={(e) => { e.preventDefault(); handleCategorySelection('Finance', 'Student Placement'); }}>Fee Structure & Scholarship</a>
+                <a href="#" onClick={(e) => { e.preventDefault(); handleCategorySelection('Finance', 'Student Placement'); }}>Expense Summary</a>
               </div>
             </div>
-
-            {/* Research */}
             <div className="dropdown">
-              <a href="#" className="session-link">Research</a>
+              <button type="button" className="session-link">Research</button>
               <div className="dropdown-content">
-                <a href="#" onClick={() => handleCategorySelection('Research', 'Department')}>Research Projects</a>
-                <a href="#" onClick={() => handleCategorySelection('Research', 'Student Placement')}>Publications</a>
+                <a href="#" onClick={(e) => { e.preventDefault(); handleCategorySelection('Research', 'Department'); }}>Research Projects</a>
+                <a href="#" onClick={(e) => { e.preventDefault(); handleCategorySelection('Research', 'Student Placement'); }}>Publications</a>
               </div>
             </div>
-
-            {/* Infrastructure */}
             <div className="dropdown">
-              <a href="#" className="session-link">Infrastructure</a>
+              <button type="button" className="session-link">Infrastructure</button>
               <div className="dropdown-content">
-                <a href="#" onClick={() => handleCategorySelection('Infrastructure', 'Department')}>Lab Detail</a>
-                <a href="#" onClick={() => handleCategorySelection('Infrastructure', 'Student Placement')}>Classroom</a>
-                <a href="#" onClick={() => handleCategorySelection('Infrastructure', 'Student Placement')}>Library</a>
-                <a href="#" onClick={() => handleCategorySelection('Infrastructure', 'Student Placement')}>Hostel and Sports Facility</a>
-                <a href="#" onClick={() => handleCategorySelection('Infrastructure', 'Student Placement')}>Maintenance Report</a>
+                <a href="#" onClick={(e) => { e.preventDefault(); handleCategorySelection('Infrastructure', 'Department'); }}>Lab Detail</a>
+                <a href="#" onClick={(e) => { e.preventDefault(); handleCategorySelection('Infrastructure', 'Student Placement'); }}>Classroom</a>
+                <a href="#" onClick={(e) => { e.preventDefault(); handleCategorySelection('Infrastructure', 'Student Placement'); }}>Library</a>
+                <a href="#" onClick={(e) => { e.preventDefault(); handleCategorySelection('Infrastructure', 'Student Placement'); }}>Hostel and Sports Facility</a>
+                <a href="#" onClick={(e) => { e.preventDefault(); handleCategorySelection('Infrastructure', 'Student Placement'); }}>Maintenance Report</a>
               </div>
             </div>
-
-            {/* Academics */}
             <div className="dropdown">
-              <a href="#" className="session-link">Academics</a>
+              <button type="button" className="session-link">Academics</button>
               <div className="dropdown-content">
-                <a href="#" onClick={() => handleCategorySelection('Academics', 'Department')}>Department</a>
-                <a href="#" onClick={() => handleCategorySelection('Academics', 'Student Placement')}>Student Placement</a>
+                <a href="#" onClick={(e) => { e.preventDefault(); handleCategorySelection('Academics', 'Department'); }}>Department</a>
+                <a href="#" onClick={(e) => { e.preventDefault(); handleCategorySelection('Academics', 'Student Placement'); }}>Student Placement</a>
               </div>
             </div>
           </>
         )}
 
-        {/* ---- sub-options ---- */}
         {optionType === 'Department' && (
           <div className="dropdown">
-            <a href="#" className="session-link">Select Department</a>
+            <button type="button" className="session-link">Select Department</button>
             <div className="dropdown-content">
-              <a href="#" onClick={() => handleOptionSelection('Computer Science')}>Computer Science</a>
-              <a href="#" onClick={() => handleOptionSelection('Mechanical Engineering')}>Mechanical Engineering</a>
-              <a href="#" onClick={() => handleOptionSelection('Electrical Engineering')}>Electrical Engineering</a>
-              <a href="#" onClick={() => handleOptionSelection('Civil Engineering')}>Civil Engineering</a>
-            </div>
-          </div>
-        )}
-
-        {optionType === 'Student Placement' && (
-          <div className="dropdown">
-            <a href="#" className="session-link">Placement Type</a>
-            <div className="dropdown-content">
-              <a href="#" onClick={() => handleOptionSelection('On Campus')}>On Campus</a>
-              <a href="#" onClick={() => handleOptionSelection('Off Campus')}>Off Campus</a>
-            </div>
-          </div>
-        )}
-
-        {/* ---- branch ---- */}
-        {optionType === 'Student Placement' && subOption && (
-          <div className="dropdown">
-            <a href="#" className="session-link">Select Branch</a>
-            <div className="dropdown-content">
-              <a href="#" onClick={() => handleBranchSelection('Computer Science')}>Computer Science</a>
-              <a href="#" onClick={() => handleBranchSelection('Mechanical Engineering')}>Mechanical Engineering</a>
-              <a href="#" onClick={() => handleBranchSelection('Electrical Engineering')}>Electrical Engineering</a>
-              <a href="#" onClick={() => handleBranchSelection('Civil Engineering')}>Civil Engineering</a>
+              <a href="#" onClick={(e) => handleOptionSelection('Computer Science', e)}>Computer Science</a>
+              <a href="#" onClick={(e) => handleOptionSelection('Mechanical Engineering', e)}>Mechanical Engineering</a>
+              <a href="#" onClick={(e) => handleOptionSelection('Electrical Engineering', e)}>Electrical Engineering</a>
+              <a href="#" onClick={(e) => handleOptionSelection('Civil Engineering', e)}>Civil Engineering</a>
             </div>
           </div>
         )}
       </nav>
 
-      <div className="container">
-        <Routes>
-          <Route path="/about"       element={<div>About Us</div>} />
-          <Route path="/contact"     element={<div>Contact Us</div>} />
-          <Route path="/help"        element={<div>Help Page</div>} />
-          <Route path="/mechanical"  element={<div>Mechanical Engineering Department Content</div>} />
-          <Route path="/computer-science"  element={<div>Computer Science Department Content</div>} />
-          <Route path="/electrical"  element={<div>Electrical Engineering Department Content</div>} />
-          <Route path="/civil"  element={<div>Civil Engineering Department Content</div>} />
-        </Routes>
+      <div className="faculty-management-container">
+        <div className="faculty-form-compact card1">
+          <h2>Faculty Login ID</h2>
+          <form onSubmit={generateFacultyId}>
+            <div className="form-group-compact">
+              <label>Name:</label>
+              <input type="text" name="name" value={newFaculty.name} onChange={handleFacultyInputChange} required />
+            </div>
 
-        {(optionType === 'Department' && subOption) ||
-         (optionType === 'Student Placement' && subOption && selectedBranch) ? (
-          <div>
-            <h2>Selected Academic Info</h2>
-            <p>Main Category: {mainCategory}</p>
-            <p>Option Type: {optionType}</p>
-            <p>Sub Option: {subOption}</p>
-            {selectedBranch && <p>Branch: {selectedBranch}</p>}
+            <div className="form-group-compact">
+              <label>Dept:</label>
+              <select name="department" value={newFaculty.department} onChange={handleFacultyInputChange} required>
+                <option value="">Select</option>
+                <option value="Computer Science">CS</option>
+                <option value="Mechanical Engineering">ME</option>
+                <option value="Electrical Engineering">EE</option>
+                <option value="Civil Engineering">CE</option>
+              </select>
+            </div>
+
+            <div className="form-group-compact">
+              <label>Email:</label>
+              <input type="email" name="email" value={newFaculty.email} onChange={handleFacultyInputChange} required />
+            </div>
+
+            <div className="form-group-compact">
+              <label>Role:</label>
+              <select name="role" value={newFaculty.role} onChange={handleFacultyInputChange}>
+                <option value="faculty">Faculty</option>
+                <option value="admin">Admin</option>
+              </select>
+            </div>
+
+            <div className="form-group-compact">
+              <label>Password:</label>
+              <input type="password" name="password" value={newFaculty.password} onChange={handleFacultyInputChange} required />
+            </div>
+
+            <button type="submit" className="generate-btn-compact">Generate ID</button>
+          </form>
+
+          {generatedId && <p className="generated-id"><strong>Faculty ID:</strong> {generatedId}</p>}
+        </div>
+
+        <div className="faculty-list-compact">
+          <h3>Existing Faculty</h3>
+          <div className="table-container">
+            <table>
+              <thead>
+                <tr>
+                  <th>Name</th>
+                  <th>Department</th>
+                  <th>Faculty ID</th>
+                  <th>Email</th>             {/* New Email Column */}
+                  <th>Password</th>          {/* New Password Column */}
+                  <th>Date Added</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+                {facultyList.map((faculty) => (
+                  <tr key={faculty.generatedId}>
+                    <td>{faculty.name}</td>
+                    <td>{faculty.department}</td>
+                    <td>{faculty.generatedId}</td>
+                    <td>{faculty.email}</td>              {/* Display Email */}
+                    <td>{faculty.password}</td>           {/* Display Password */}
+                    <td>{faculty.dateAdded ? new Date(faculty.dateAdded).toLocaleDateString() : 'N/A'}</td>
+                    <td>
+                      <button
+                        onClick={() => deleteFaculty(faculty.generatedId)}
+                        className="delete-btn"
+                      >
+                        Delete
+                      </button>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
           </div>
-        ) : null}
-      </div>
+        </div>
 
+      </div>
       <footer>
         <p>&copy; 2025 Institute Annual Report Portal</p>
       </footer>
-    </>
+    </div>
   );
 };
 

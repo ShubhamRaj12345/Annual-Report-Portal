@@ -54,11 +54,11 @@ function Dashboard() {
       </header> */}
 
       <header className={`header1 ${isScrolled ? 'scrolled' : ''}`}>
-  <div className="header1-content">
-    <img src="logo.jpg" alt="Institute Logo" className="header1-logo" />
-    <h1>Annual Report Portal</h1>
-  </div>
-    </header>
+        <div className="header1-content">
+          <img src="logo.jpg" alt="Institute Logo" className="header1-logo" />
+          <h1>Annual Report Portal</h1>
+        </div>
+      </header>
 
 
       <nav className={`navbar ${isScrolled ? 'scrolled' : ''}`}>
@@ -86,15 +86,16 @@ function Dashboard() {
           <img src="/photo8.jpg" alt="Slide 8" style={{ display: currentSlide === 7 ? 'block' : 'none' }} />
         </div>
       </div>
-
-      <div className="container">
-        {cards.map((card, index) => (
-          <div className="card" key={index}>
-            <i className={card.icon}></i>
-            <h3>{card.title}</h3>
-            <a href={card.link}>Go to {card.title}</a>
-          </div>
-        ))}
+      <div className="top-container">
+        <div className="container">
+          {cards.map((card, index) => (
+            <div className="card" key={index}>
+              <i className={card.icon}></i>
+              <h3>{card.title}</h3>
+              <a href={card.link}>Go to {card.title}</a>
+            </div>
+          ))}
+        </div>
       </div>
 
       <footer>
@@ -113,13 +114,13 @@ function Dashboard() {
                 <p>
                   Established in 2007, the Sagar Institute of Science and Technology (SISTec), Gandhinagar, Bhopal, stands as a beacon of technical education in Madhya Pradesh...
                 </p>
-                <br/>
+                <br />
 
                 <p>
                   The institute boasts a sprawling 40+ acre campus equipped with over 250 laboratories, digital classrooms, a comprehensive library housing more than 45,000 books, and modern amenities including hostels, a gym, and a swimming pool. SISTec's commitment to excellence is reflected in its NAAC accreditation and NBA-accredited departments, ensuring quality education and continuous improvement.
                 </p>
-                <br/>
-                
+                <br />
+
 
                 <p>
                   SISTec's dedication to holistic development is evident through its various initiatives, including the annual techno-cultural fest 'Sagar Fiesta', training programs like 'Sagar Manthan', and the 'Sagar Samarthya' student assessment program. These endeavors, combined with a robust academic framework, position SISTec Gandhinagar as a leading institution committed to shaping the technocrats and leaders of tomorrow.

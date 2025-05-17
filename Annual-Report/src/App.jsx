@@ -11,7 +11,7 @@ import AdminLogin from './Admin/AdminLogin';
 import AdminHome1 from './Admin/AdminHome1';
 import Academics from './components/Academics';
 import ComputerScience from './StudentAcademics/ComputerScience/ComputerScience';
-import Mechanical from './StudentAcademics/Mechanical';
+import Mechanical from './StudentAcademics/Mechanical/Mechanical';
 
 
 
