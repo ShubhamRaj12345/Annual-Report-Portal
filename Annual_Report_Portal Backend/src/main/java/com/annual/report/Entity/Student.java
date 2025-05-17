@@ -6,9 +6,18 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
 import java.util.Map;
 
 @Entity
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
 public class Student {
 
         @Id
@@ -17,6 +26,7 @@ public class Student {
 
         private String name;
         private String rollNo;
+        private  String session;
         private int semester;
 
         @ElementCollection(fetch = FetchType.EAGER)
@@ -25,46 +35,7 @@ public class Student {
         @Column(name = "grade")
         private Map<String, String> subjects;
 
-        // Getters and Setters
-        public Long getId() {
-                return id;
-        }
 
-        public String getName() {
-                return name;
-        }
-
-        public String getRollNo() {
-                return rollNo;
-        }
-
-        public int getSemester() {
-                return semester;
-        }
-
-        public Map<String, String> getSubjects() {
-                return subjects;
-        }
-
-        public void setId(Long id) {
-                this.id = id;
-        }
-
-        public void setName(String name) {
-                this.name = name;
-        }
-
-        public void setRollNo(String rollNo) {
-                this.rollNo = rollNo;
-        }
-
-        public void setSemester(int semester) {
-                this.semester = semester;
-        }
-
-        public void setSubjects(Map<String, String> subjects) {
-                this.subjects = subjects;
-        }
 }
 
 
