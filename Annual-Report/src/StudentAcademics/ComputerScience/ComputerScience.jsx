@@ -561,8 +561,8 @@ const ComputerScience = () => {
   const [isAdding, setIsAdding] = useState(false);
 
   const subjects = {
-    1: ['Math', 'Data Structures', 'OS', 'DBMS'],
-    2: ['Math', 'Algorithms', 'OS', 'DBMS'],
+    1: ['BT-101 - Engineering Chemistry', 'BT-102 - Mathematics-I', 'BT-104 - Basic Electrical & Electronics Engineering','BT-103 - English for Communication', 'BT-105 - Engineering Graphics'],
+    2: ['BT-201 - Engineering Physics', 'BT-202 - Mathematics-II', 'BT-203 - Basic Mechanical Engineering', 'BT-204 - Basic Civil Engineering & Mechanics','BT-205 - Basic Computer Engineering'],
     3: ['ES-301 - Energy & Environmental Engineering', 'CS-302 - Discrete Structure', 'CS-303 - Data Structure', 'CS-304 - Digital Systems','CS-305 - Object Oriented Programming & Methodology'],
     4: ['BT-401 - Mathematics- III', 'CS-402 - Analysis Design of Algorithm', 'CS-403 - Software Engineering', 'CS-404 - Computer Org. & Architecture','CS-405 - Operating Systems'],
     5: ['CS-501 - Theory of Computation', 'CS-502 - Database Management Systems', 'CS-503 - Pattern Recognition', 'CS-504 - Internet and Web Technology'],

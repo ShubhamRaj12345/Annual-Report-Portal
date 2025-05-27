@@ -1,21 +1,21 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 
-function Collaboration() {
+function Placement() {
   return (
-    <div className="collaboration-container">
+    <div className="placement-container">
       <style>{`
-        .collaboration-container {
+        .placement-container {
           display: flex;
           justify-content: center;
           align-items: center;
           min-height: 100vh;
-          background-color: #f0f4f8;
+          background-color: #f8fafc;
           padding: 20px;
           text-align: center;
         }
 
-        .collaboration-message-box {
+        .placement-box {
           background-color: white;
           padding: 30px;
           border-radius: 16px;
@@ -24,41 +24,41 @@ function Collaboration() {
           width: 100%;
         }
 
-        .collaboration-title {
-          color: #d97706;
+        .placement-title {
+          color: #0f766e;
           font-size: 24px;
           margin-bottom: 10px;
         }
 
-        .collaboration-message {
-          color: #444;
+        .placement-message {
+          color: #374151;
           font-size: 16px;
           margin-bottom: 20px;
         }
 
-        .collaboration-link {
+        .placement-link {
           color: #1d4ed8;
           text-decoration: none;
           font-weight: bold;
           transition: color 0.3s ease;
         }
 
-        .collaboration-link:hover {
+        .placement-link:hover {
           color: #2563eb;
         }
       `}</style>
 
-      <div className="collaboration-message-box">
-        <h1 className="collaboration-title">Service Unavailable</h1>
-        <p className="collaboration-message">
-          The collaboration section is currently under development or temporarily unavailable.
+      <div className="placement-box">
+        <h1 className="placement-title">Service Unavailable</h1>
+        <p className="placement-message">
+          The placement section is currently under development or temporarily unavailable.
         </p>
-        <Link to="/" className="collaboration-link">
-          Go back to Home
+        <Link to="/" className="placement-link">
+          ← Back to Home
         </Link>
       </div>
     </div>
   );
 }
 
-export default Collaboration;
+export default Placement;

@@ -23,7 +23,7 @@ function Dashboard() {
     { icon: 'fas fa-graduation-cap', title: 'Academics', link: '/academics' },
     { icon: 'fas fa-users', title: 'Collaboration', link: '/collaboration' },
     { icon: 'fas fa-clipboard-list', title: 'Final Report', link: '/report' },
-    { icon: 'fas fa-graduation-cap', title: 'Placement', link: '/academics' }
+    { icon: 'fas fa-graduation-cap', title: 'Placement', link: '/placement' }
   ];
 
   useEffect(() => {
