@@ -34,14 +34,14 @@ function App() {
           <Route path="/admin-login" element={<AdminLogin/>} />
           <Route path="/research" element={<Research />} />
           <Route path="/finance" element={<Finance />} />
-        <Route path="/placement" element={<Placement />} />
+          <Route path="/placement" element={<Placement />} />
           <Route path="/collaboration" element={<Collaboration />} />
           <Route path="/report" element={<Report />} />
           <Route path="/computer-science" element={<ComputerScience />} />
           <Route path="/mechanical" element={<Mechanical />} />
           <Route path="/admin-home1" element={<AdminHome1/>} />
           <Route path="/academics" element={<Academics />} />
-           <Route path="/infrastructure" element={<Infrastructure />} />
+          <Route path="/infrastructure" element={<Infrastructure />} />
 
     
 
